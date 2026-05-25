@@ -1,0 +1,28 @@
+// This ensures the game always starts from the first scene in Build Settings (index 0)
+// when you press Play in the Editor, regardless of which scene you have open.
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+
+[InitializeOnLoad]
+public class PlayModeStartSceneLoader
+{
+    static PlayModeStartSceneLoader()
+    {
+
+        
+        if (EditorBuildSettings.scenes.Length > 0)
+        {
+            string scenePath = EditorBuildSettings.scenes[0].path;
+            SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
+            
+            if (sceneAsset != null)
+            {
+                EditorSceneManager.playModeStartScene = sceneAsset;
+                Debug.Log($"<color=green>PlayModeStartSceneLoader:</color> Always starting from <b>{sceneAsset.name}</b>");
+            }
+        }
+    }
+}
+#endif
